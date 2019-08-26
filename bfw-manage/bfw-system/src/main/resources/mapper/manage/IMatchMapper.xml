@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bfw.manage.mapper.IMatchMapper">
+
+    <resultMap id="queryMatch" type="com.bfw.manage.domain.MatchListBean">
+        <result property="id" column="id"/>
+        <result property="match_time" column="match_time"/>
+        <result property="tournament_id" column="tournament_id"/>
+        <result property="status" column="status"/>
+        <result property="status_code" column="status_code"/>
+        <result property="status_name" column="status_name"/>
+        <result property="time_played" column="time_played"/>
+        <result property="home_team_id" column="home_team_id"/>
+        <result property="away_team_id" column="away_team_id"/>
+        <result property="home_team_name" column="home_team_name"/>
+        <result property="away_team_name" column="away_team_name"/>
+        <result property="home_team_score" column="home_team_score"/>
+        <result property="away_team_score" column="away_team_score"/>
+        <result property="round" column="round"/>
+        <result property="round_type" column="round_type"/>
+        <result property="home_team_logo" column="home_team_logo"/>
+        <result property="away_team_logo" column="away_team_logo"/>
+        <result property="match_info" column="match_info"/>
+        <collection property="home_team" ofType="com.bfw.manage.domain.MatchListBean$HomeTeam">
+            <result property="logo_url" column="home_team_logo"/>
+            <result property="id" column="home_team_id"/>
+        </collection>
+        <collection property="away_team" ofType="com.bfw.manage.domain.MatchListBean$AwayTeam">
+            <result property="logo_url" column="away_team_logo"/>
+            <result property="id" column="away_team_id"/>
+        </collection>
+        <collection property="team_info" ofType="com.bfw.manage.domain.MatchListBean$TeamInfo">
+            <result property="id" column="team_info_id"/>
+            <result property="cn_name" column="team_info_name"/>
+            <result property="cn_alias" column="team_info_alias"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryMatchList" resultMap="queryMatch">
+        SELECT
+            mt.id AS id,
+            mt.match_time AS match_time,
+            mt.tournament_id AS tournament_id,
+            mt.`status` AS status,
+            mt.status_code AS status_code,
+            mt.status_name AS status_name,
+            mt.time_played AS time_played,
+            mt.home_team_id AS home_team_id,
+            mt.away_team_id AS away_team_id,
+            mt.home_team_name AS home_team_name,
+            mt.away_team_name AS away_team_name,
+            mt.home_team_score AS home_team_score,
+            mt.away_team_score AS away_team_score,
+            mt.round AS round,
+            mt.round_type AS round_type,
+            home_team.logo_url as home_team_logo,
+            away_team.logo_url as away_team_logo,
+            home_team.logo_url as home_team_logo,
+            away_team.logo_url as away_team_logo,
+            st.cn_alias as match_info,
+            home_team.id as home_team_id,
+            away_team.id as away_team_id,
+            st.id as team_info_id,
+            st.cn_name as team_info_name,
+            st.cn_alias as team_info_alias,
+            st.cn_name as cn_name
+        FROM
+            s_match mt
+                LEFT JOIN s_team home_team ON mt.home_team_id = home_team.id
+                left join s_team away_team on mt.away_team_id=away_team.id
+                left join s_tournament st on st.id=mt.tournament_id
+        where mt.status=#{status} and mt.sport_id=#{sport_type} and mt.match_time BETWEEN DATE_FORMAT(CONCAT(#{match_data},' 00:00:00'),'%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(CONCAT(#{match_data},' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+    </select>
+
+    <select id="getDetail" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+            m.id,
+            m.sport_id,
+            m.match_time,
+            m.home_team_name,
+            m.away_team_name,
+            m.home_team_score,
+            m.away_team_score,
+            m.home_team_half_time_score,
+            m.away_team_half_time_score,
+            m.home_team_normal_time_score,
+            m.away_team_normal_time_score,
+            m.home_team_id,
+            m.away_team_id,
+            m.home_formation,
+            m.away_formation,
+            m.status,
+            m.status_name,
+            m.winner,
+            m.aggregate_winner,
+            m.time_played,
+            m.time_remaining,
+            m.lo_bet_status,
+            m.stadium_name,
+            m.referee_name,
+            m.round,
+            m.round_type,
+            home_team.logo_url as home_team_logo,
+            away_team.logo_url as away_team_logo,
+            s.cn_name as cn_name,
+            IFNULL(m.status,'') as status_text,
+            IFNULL(m.winner,'') as winner_name
+        FROM
+            s_match m
+            LEFT JOIN s_team home_team ON m.home_team_id = home_team.id
+            left join s_team away_team on m.away_team_id=away_team.id
+            left join s_tournament s on s.id=m.tournament_id
+        WHERE m.id=#{match_id}
+    </select>
+
+    <select id="getTeam" resultType="com.bfw.manage.domain.TeamInfoCategory">
+        SELECT
+            e.id AS team_id,
+            e.cn_alias AS NAME,
+            e.logo_url
+         FROM
+            s_tournament_team t
+        LEFT JOIN s_team e ON t.team_id = e.id
+        where e.sport_id=#{type} and tournament_id=#{id}
+    </select>
+
+</mapper>

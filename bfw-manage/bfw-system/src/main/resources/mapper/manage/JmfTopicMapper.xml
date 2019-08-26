@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfw.manage.mapper.JmfTopicMapper">
+    
+    <resultMap type="JmfTopic" id="JmfTopicResult">
+        <result property="id"    column="id"    />
+        <result property="topicCategoryId"    column="topic_category_id"    />
+        <result property="logoUrl"    column="logo_url"    />
+        <result property="title"    column="title"    />
+        <result property="describe"    column="describe"    />
+        <result property="createdId"    column="created_id"    />
+        <result property="display"    column="display"    />
+        <result property="sort"    column="sort"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectJmfTopicVo">
+        select id, topic_category_id, logo_url, title, 'describe', created_id, display, sort, created_at, updated_at, status from jmf_topic
+    </sql>
+
+    <sql id="selectVo">
+        select id, topic_category_id topicCategoryId, logo_url logoUrl, title, 'describe', display, sort, status from jmf_topic
+    </sql>
+
+    <select id="selectJmfTopicList" parameterType="JmfTopic" resultType="com.bfw.manage.domain.JmfTopicExt">
+        <include refid="selectJmfTopicVo"/>
+        <where>  
+            <if test="topicCategoryId != null "> and topic_category_id = #{topicCategoryId}</if>
+            <if test="logoUrl != null  and logoUrl != ''"> and logo_url = #{logoUrl}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="describe != null  and describe != ''"> and 'describe' = #{describe}</if>
+            <if test="createdId != null "> and created_id = #{createdId}</if>
+            <if test="display != null "> and display = #{display}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectJmfTopicById" parameterType="Integer" resultMap="JmfTopicResult">
+        <include refid="selectJmfTopicVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertJmfTopic" parameterType="JmfTopic" useGeneratedKeys="true" keyProperty="id">
+        insert into jmf_topic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="topicCategoryId != null ">topic_category_id,</if>
+            <if test="logoUrl != null  and logoUrl != ''">logo_url,</if>
+            <if test="title != null  and title != ''">title,</if>
+            <if test="describe != null  and describe != ''">'describe',</if>
+            <if test="createdId != null ">created_id,</if>
+            <if test="display != null ">display,</if>
+            <if test="sort != null ">sort,</if>
+            <if test="createdAt != null ">created_at,</if>
+            <if test="updatedAt != null ">updated_at,</if>
+            <if test="status != null ">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="topicCategoryId != null ">#{topicCategoryId},</if>
+            <if test="logoUrl != null  and logoUrl != ''">#{logoUrl},</if>
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="describe != null  and describe != ''">#{describe},</if>
+            <if test="createdId != null ">#{createdId},</if>
+            <if test="display != null ">#{display},</if>
+            <if test="sort != null ">#{sort},</if>
+            <if test="createdAt != null ">#{createdAt},</if>
+            <if test="updatedAt != null ">#{updatedAt},</if>
+            <if test="status != null ">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateJmfTopic" parameterType="JmfTopic">
+        update jmf_topic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="topicCategoryId != null ">topic_category_id = #{topicCategoryId},</if>
+            <if test="logoUrl != null  and logoUrl != ''">logo_url = #{logoUrl},</if>
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="describe != null  and describe != ''">'describe' = #{describe},</if>
+            <if test="createdId != null ">created_id = #{createdId},</if>
+            <if test="display != null ">display = #{display},</if>
+            <if test="sort != null ">sort = #{sort},</if>
+            <if test="createdAt != null ">created_at = #{createdAt},</if>
+            <if test="updatedAt != null ">updated_at = #{updatedAt},</if>
+            <if test="status != null ">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJmfTopicById" parameterType="Integer">
+        delete from jmf_topic where id = #{id}
+    </delete>
+
+    <delete id="deleteJmfTopicByIds" parameterType="String">
+        delete from jmf_topic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bfw.manage.mapper.STournamentMapper">
+    
+    <resultMap type="STournament" id="STournamentResult">
+        <result property="id"    column="id"    />
+        <result property="sportId"    column="sport_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="currentSeasonId"    column="current_season_id"    />
+        <result property="cnName"    column="cn_name"    />
+        <result property="cnAlias"    column="cn_alias"    />
+        <result property="enName"    column="en_name"    />
+        <result property="enAlias"    column="en_alias"    />
+        <result property="logoUrl"    column="logo_url"    />
+        <result property="type"    column="type"    />
+        <result property="periodType"    column="period_type"    />
+        <result property="level"    column="level"    />
+        <result property="description"    column="description"    />
+        <result property="isMatched"    column="is_matched"    />
+        <result property="isImported"    column="is_imported"    />
+        <result property="isManualUpdate"    column="is_manual_update"    />
+        <result property="liveSource"    column="live_source"    />
+        <result property="oddsSource"    column="odds_source"    />
+        <result property="statisticsSource"    column="statistics_source"    />
+        <result property="shareLevel"    column="share_level"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="ishot"    column="isHot"    />
+        <result property="newlogo"    column="newLogo"    />
+        <result property="xmId"    column="xm_id"    />
+        <result property="dataUpdateTime"    column="data_update_time"    />
+        <result property="dataCreateTime"    column="data_create_time"    />
+        <result property="color"    column="color"    />
+    </resultMap>
+
+    <sql id="selectSTournamentVo">
+        select id, sport_id, category_id, current_season_id, cn_name, cn_alias, en_name, en_alias, logo_url, type, period_type, level, description, is_matched, is_imported, is_manual_update, live_source, odds_source, statistics_source, share_level, update_time, isHot, newLogo, xm_id, data_update_time, data_create_time, color from s_tournament
+    </sql>
+
+    <select id="selectSTournamentList" parameterType="STournament" resultMap="STournamentResult">
+        <include refid="selectSTournamentVo"/>
+        <where>  
+            <if test="sportId != null "> and sport_id = #{sportId}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="currentSeasonId != null "> and current_season_id = #{currentSeasonId}</if>
+            <if test="cnName != null  and cnName != ''"> and cn_name like concat('%', #{cnName}, '%')</if>
+            <if test="cnAlias != null  and cnAlias != ''"> and cn_alias = #{cnAlias}</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+            <if test="enAlias != null  and enAlias != ''"> and en_alias = #{enAlias}</if>
+            <if test="logoUrl != null  and logoUrl != ''"> and logo_url = #{logoUrl}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="periodType != null "> and period_type = #{periodType}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="isMatched != null "> and is_matched = #{isMatched}</if>
+            <if test="isImported != null "> and is_imported = #{isImported}</if>
+            <if test="isManualUpdate != null "> and is_manual_update = #{isManualUpdate}</if>
+            <if test="liveSource != null "> and live_source = #{liveSource}</if>
+            <if test="oddsSource != null "> and odds_source = #{oddsSource}</if>
+            <if test="statisticsSource != null "> and statistics_source = #{statisticsSource}</if>
+            <if test="shareLevel != null "> and share_level = #{shareLevel}</if>
+            <if test="ishot != null "> and isHot = #{ishot}</if>
+            <if test="newlogo != null  and newlogo != ''"> and newLogo = #{newlogo}</if>
+            <if test="xmId != null "> and xm_id = #{xmId}</if>
+            <if test="dataUpdateTime != null "> and data_update_time = #{dataUpdateTime}</if>
+            <if test="dataCreateTime != null "> and data_create_time = #{dataCreateTime}</if>
+            <if test="color != null  and color != ''"> and color = #{color}</if>
+        </where>
+    </select>
+    
+    <select id="selectSTournamentById" parameterType="Long" resultMap="STournamentResult">
+        <include refid="selectSTournamentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSTournament" parameterType="STournament" useGeneratedKeys="true" keyProperty="id">
+        insert into s_tournament
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sportId != null ">sport_id,</if>
+            <if test="categoryId != null ">category_id,</if>
+            <if test="currentSeasonId != null ">current_season_id,</if>
+            <if test="cnName != null  and cnName != ''">cn_name,</if>
+            <if test="cnAlias != null  and cnAlias != ''">cn_alias,</if>
+            <if test="enName != null  and enName != ''">en_name,</if>
+            <if test="enAlias != null  and enAlias != ''">en_alias,</if>
+            <if test="logoUrl != null  and logoUrl != ''">logo_url,</if>
+            <if test="type != null ">type,</if>
+            <if test="periodType != null ">period_type,</if>
+            <if test="level != null ">level,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="isMatched != null ">is_matched,</if>
+            <if test="isImported != null ">is_imported,</if>
+            <if test="isManualUpdate != null ">is_manual_update,</if>
+            <if test="liveSource != null ">live_source,</if>
+            <if test="oddsSource != null ">odds_source,</if>
+            <if test="statisticsSource != null ">statistics_source,</if>
+            <if test="shareLevel != null ">share_level,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="ishot != null ">isHot,</if>
+            <if test="newlogo != null  and newlogo != ''">newLogo,</if>
+            <if test="xmId != null ">xm_id,</if>
+            <if test="dataUpdateTime != null ">data_update_time,</if>
+            <if test="dataCreateTime != null ">data_create_time,</if>
+            <if test="color != null  and color != ''">color,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sportId != null ">#{sportId},</if>
+            <if test="categoryId != null ">#{categoryId},</if>
+            <if test="currentSeasonId != null ">#{currentSeasonId},</if>
+            <if test="cnName != null  and cnName != ''">#{cnName},</if>
+            <if test="cnAlias != null  and cnAlias != ''">#{cnAlias},</if>
+            <if test="enName != null  and enName != ''">#{enName},</if>
+            <if test="enAlias != null  and enAlias != ''">#{enAlias},</if>
+            <if test="logoUrl != null  and logoUrl != ''">#{logoUrl},</if>
+            <if test="type != null ">#{type},</if>
+            <if test="periodType != null ">#{periodType},</if>
+            <if test="level != null ">#{level},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="isMatched != null ">#{isMatched},</if>
+            <if test="isImported != null ">#{isImported},</if>
+            <if test="isManualUpdate != null ">#{isManualUpdate},</if>
+            <if test="liveSource != null ">#{liveSource},</if>
+            <if test="oddsSource != null ">#{oddsSource},</if>
+            <if test="statisticsSource != null ">#{statisticsSource},</if>
+            <if test="shareLevel != null ">#{shareLevel},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="ishot != null ">#{ishot},</if>
+            <if test="newlogo != null  and newlogo != ''">#{newlogo},</if>
+            <if test="xmId != null ">#{xmId},</if>
+            <if test="dataUpdateTime != null ">#{dataUpdateTime},</if>
+            <if test="dataCreateTime != null ">#{dataCreateTime},</if>
+            <if test="color != null  and color != ''">#{color},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSTournament" parameterType="STournament">
+        update s_tournament
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sportId != null ">sport_id = #{sportId},</if>
+            <if test="categoryId != null ">category_id = #{categoryId},</if>
+            <if test="currentSeasonId != null ">current_season_id = #{currentSeasonId},</if>
+            <if test="cnName != null  and cnName != ''">cn_name = #{cnName},</if>
+            <if test="cnAlias != null  and cnAlias != ''">cn_alias = #{cnAlias},</if>
+            <if test="enName != null  and enName != ''">en_name = #{enName},</if>
+            <if test="enAlias != null  and enAlias != ''">en_alias = #{enAlias},</if>
+            <if test="logoUrl != null  and logoUrl != ''">logo_url = #{logoUrl},</if>
+            <if test="type != null ">type = #{type},</if>
+            <if test="periodType != null ">period_type = #{periodType},</if>
+            <if test="level != null ">level = #{level},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="isMatched != null ">is_matched = #{isMatched},</if>
+            <if test="isImported != null ">is_imported = #{isImported},</if>
+            <if test="isManualUpdate != null ">is_manual_update = #{isManualUpdate},</if>
+            <if test="liveSource != null ">live_source = #{liveSource},</if>
+            <if test="oddsSource != null ">odds_source = #{oddsSource},</if>
+            <if test="statisticsSource != null ">statistics_source = #{statisticsSource},</if>
+            <if test="shareLevel != null ">share_level = #{shareLevel},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="ishot != null ">isHot = #{ishot},</if>
+            <if test="newlogo != null  and newlogo != ''">newLogo = #{newlogo},</if>
+            <if test="xmId != null ">xm_id = #{xmId},</if>
+            <if test="dataUpdateTime != null ">data_update_time = #{dataUpdateTime},</if>
+            <if test="dataCreateTime != null ">data_create_time = #{dataCreateTime},</if>
+            <if test="color != null  and color != ''">color = #{color},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSTournamentById" parameterType="Long">
+        delete from s_tournament where id = #{id}
+    </delete>
+
+    <delete id="deleteSTournamentByIds" parameterType="String">
+        delete from s_tournament where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
