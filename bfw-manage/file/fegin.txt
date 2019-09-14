@@ -1,0 +1,83 @@
+    @PostMapping("/v1/rooms/insertOrUpdate")
+    public String   insertOrUpdate(@RequestBody RoomRecommendReq recommendReq,HttpServletRequest request){
+        CommonResult<RoomRecommend> Entity = new CommonResult<RoomRecommend>();
+        String url=URL+"/v1/rooms/recommend";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String,Object> map = new HashMap<>();
+        map.put("clientType",recommendReq.getClientType());
+        map.put("description",recommendReq.getDescription());
+        map.put("startDate",recommendReq.getStartDate());
+        map.put("endDate",recommendReq.getEndDate());
+        map.put("status",recommendReq.getStatus());
+        map.put("sort",recommendReq.getSort());
+        map.put("roomId",recommendReq.getRoomId());
+        map.put("zone",recommendReq.getZone());
+        map.put("matchType",recommendReq.getMatchId());
+        map.put("matchId",recommendReq.getMatchId());
+        map.put("anchorId",recommendReq.getAnchorId());
+        map.put("image",recommendReq.getImage());
+
+        HttpEntity<HashMap> requestBody = new HttpEntity<HashMap> ((HashMap)  map,headers);
+        String result = restTemplate.postForObject(url, requestBody,String.class);
+        return result;
+    }
+
+------------------php----------------------------------------------------------------------------------
+    net stop apache2.4-server
+    net start apache2.4-server
+
+    php7apache2_4.dll
+
+    #php7 support
+    LoadModule php7_module "E:/php/php7.2/php-sdk/php7apache2_4.dll"
+    <IfModule php7_module> 
+            PHPIniDir "E:/php/php7.2/php-sdk/" 
+            AddType application/x-httpd-php .php
+            AddType application/x-httpd-php-source.phps
+    </IfModule>
+
+
+
+    LoadModule php7_module E:/php/php7.2/php-sdk/php7apache2_4.dll
+    PHPIniDir  "E:/php/php7.2/php-sdk"
+
+    <IfModule php7_module>
+        AddType application/x-httpd-php .php
+        AddType application/x-httpd-php-source .phps
+    </IfModule>
+
+    <IfModule unixd_module>
+
+    -----1---------
+    <IfModule mime_module>
+    AddType application/x-httpd-php .php .html .htm
+    </IfModule>
+
+    ------2--------------
+    LoadModule php7_module E:/php/php7.2/sdk/php7apache2_4.dll
+    PHPIniDir  "E:/php/php7.2/sdk"
+
+    ------3---------------
+    DocumentRoot "e:/www"
+    <Directory "e:/www">
+
+    ---------------------------------------------------------------------------------------------------------------------
+    Feign从配置文件中读取url
+    https://blog.csdn.net/tuhooo/article/details/84576619
+    eign的url和name都是可配置的，就是从配置文件中读取的属性值，然后用占位符引用就可以了：
+
+    ${rpc.url}
+
+    @FeignClient(name = "me",
+            url = "${rpc.url}",  // 这里是可以配置的, 就不用再硬编码了
+            fallbackFactory = MyHystrixFallbackFactory.class,
+            configuration = MultipartSupportConfig.class)
+    public interface RpcService {
+        @RequestMapping(value = "/hello", method = GET)
+        Result<String> helloWorld(@RequestHeader("token") String accessKey,
+                                  @RequestParam("sign") String sign);
+    }
+    ————————————————
+    版权声明：本文为CSDN博主「tuhooo」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+    原文链接：https://blog.csdn.net/tuhooo/article/details/84576619

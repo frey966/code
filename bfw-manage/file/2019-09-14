@@ -15,3 +15,7 @@ https://blog.csdn.net/hyxhbj1/article/details/80732890
 nacos/nacos
 
 xxl-job
+
+npm -i
+npm run dev
+npm run build
