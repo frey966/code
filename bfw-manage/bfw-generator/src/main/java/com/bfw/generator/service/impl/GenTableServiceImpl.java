@@ -85,7 +85,7 @@ public class GenTableServiceImpl implements IGenTableService
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    @DataSource(DataSourceType.DB2)
+
     public List<GenTable> selectDbTableList(GenTable genTable)
     {
         return genTableMapper.selectDbTableList(genTable);
@@ -97,7 +97,7 @@ public class GenTableServiceImpl implements IGenTableService
      * @param tableNames 表名称组
      * @return 数据库表集合
      */
-    @DataSource(DataSourceType.DB2)
+
     public List<GenTable> selectDbTableListByNames(String[] tableNames)
     {
         return genTableMapper.selectDbTableListByNames(tableNames);
@@ -176,7 +176,7 @@ public class GenTableServiceImpl implements IGenTableService
     }
 
 
-    @DataSource(DataSourceType.DB2)
+
     public List<GenTableColumn> getGenTableColumns(String tableName){
         List<GenTableColumn> list = genTableColumnMapper.selectDbTableColumnsByName(tableName);
         return list;
